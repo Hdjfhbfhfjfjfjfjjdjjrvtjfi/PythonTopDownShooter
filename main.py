@@ -19,9 +19,9 @@ environment_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
 
 
-Border(20, 1050, -1, 0, environment_group)
+Border(20, 1050, -20, 0, environment_group)
 Border(20, 1050, 1681, 0, environment_group)
-Border(1680, 20, 0, -1, environment_group)
+Border(1680, 20, 0, -20, environment_group)
 Border(1680, 20, 0, 1051, environment_group)
 player = Player(player_group)
 
