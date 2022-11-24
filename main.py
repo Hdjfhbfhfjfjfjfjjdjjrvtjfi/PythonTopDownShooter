@@ -3,7 +3,7 @@ from player import Player
 from environment import Border
 from bullet import Bullet
 
-
+#
 pygame.init()
 
 HEIGHT = 1050
