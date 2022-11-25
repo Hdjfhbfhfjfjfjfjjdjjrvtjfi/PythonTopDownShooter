@@ -17,6 +17,11 @@ clock = pygame.time.Clock()
 player_group = pygame.sprite.Group()
 environment_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
+enemies_group = pygame.sprite.Group()
+main_group = pygame.sprite.Group()
+main_group.add(player_group)
+main_group.add(bullet_group)
+main_group.add(enemies_group)
 
 
 Border(20, 1050, -20, 0, environment_group)
