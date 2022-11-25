@@ -14,7 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.add(group)
 
-    def update(self):
+    def update(self, **kwargs):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LSHIFT]:
             self.movement(keys, self.RUN_SPEED)
