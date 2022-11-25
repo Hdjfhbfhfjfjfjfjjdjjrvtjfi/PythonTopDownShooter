@@ -22,13 +22,17 @@ class Bullet(pygame.sprite.Sprite):
         for _ in range(self.SPEED):
             self.position += self.speed
             self.rect.center = self.position
-            self.collide(group)
+            try:
+                self.collide(group)
+            except StopIteration:
+                break
 
     def collide(self, group):
         collides = (pygame.sprite.spritecollideany(sprite=self, group=group[0], collided=pygame.sprite.collide_rect),
                     pygame.sprite.spritecollideany(sprite=self, group=group[1], collided=pygame.sprite.collide_rect))
-        if collides[0] is not None or collides[1] is not None:
-            if collides[1] is not None:
-                collides[1].kill()
-                self.kill()
+        if collides[0] is not None:
             self.kill()
+        if collides[1] is not None:
+            self.kill()
+            collides[1].kill()
+            raise StopIteration

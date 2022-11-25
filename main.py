@@ -3,6 +3,7 @@ from player import Player
 from environment import Border
 from bullet import Bullet
 from enemies import Enemy
+from enemy_spawner import EnemySpawner
 
 #
 pygame.init()
@@ -25,8 +26,7 @@ Border(20, 1050, -20, 0, environment_group)
 Border(20, 1050, 1681, 0, environment_group)
 Border(1680, 20, 0, -20, environment_group)
 Border(1680, 20, 0, 1051, environment_group)
-Enemy(enemies_group, (1000, 1000))
-Enemy(enemies_group, (900, 900))
+enemy_spawner = EnemySpawner(Enemy)
 player = Player(player_group)
 
 
@@ -38,6 +38,7 @@ while True:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             Bullet(player.rect.centerx, player.rect.centery, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], bullet_group)
     screen.fill((0, 0, 0))
+    enemy_spawner.update(enemies_group)
     environment_group.draw(screen)
     bullet_group.update((environment_group, enemies_group))
     bullet_group.draw(screen)
