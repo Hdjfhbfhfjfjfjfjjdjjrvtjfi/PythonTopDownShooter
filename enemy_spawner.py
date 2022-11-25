@@ -1,6 +1,3 @@
-import pygame
-
-
 class EnemySpawner:
     def __init__(self, cls):
         self.time = 0

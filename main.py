@@ -1,9 +1,10 @@
 import pygame
-from player import Player
-from environment import Border
+
 from bullet import Bullet
 from enemies import Enemy
 from enemy_spawner import EnemySpawner
+from environment import Border
+from player import Player
 
 #
 pygame.init()
