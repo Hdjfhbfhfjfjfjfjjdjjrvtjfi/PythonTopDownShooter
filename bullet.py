@@ -1,4 +1,5 @@
 import pygame
+import time
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -24,9 +25,10 @@ class Bullet(pygame.sprite.Sprite):
             self.collide(group)
 
     def collide(self, group):
-        walls = pygame.sprite.spritecollideany(sprite=self, group=group, collided=pygame.sprite.collide_rect)
-        if walls is not None:
+        collides = (pygame.sprite.spritecollideany(sprite=self, group=group[0], collided=pygame.sprite.collide_rect),
+                    pygame.sprite.spritecollideany(sprite=self, group=group[1], collided=pygame.sprite.collide_rect))
+        if collides[0] is not None or collides[1] is not None:
+            if collides[1] is not None:
+                collides[1].kill()
+                self.kill()
             self.kill()
-
-    def __del__(self):
-        print(1)

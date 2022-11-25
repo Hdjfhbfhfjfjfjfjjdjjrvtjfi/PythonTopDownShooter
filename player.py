@@ -14,7 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.add(group)
 
-    def update(self, **kwargs):
+    def update(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LSHIFT]:
             self.movement(keys, self.RUN_SPEED)
@@ -39,5 +39,3 @@ class Player(pygame.sprite.Sprite):
             self.position[1] = 1040
         elif self.position[1] < 10:
             self.position[1] = 10
-
-
