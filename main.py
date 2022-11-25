@@ -27,7 +27,7 @@ Border(20, 1050, 1681, 0, environment_group)
 Border(1680, 20, 0, -20, environment_group)
 Border(1680, 20, 0, 1051, environment_group)
 enemy_spawner = EnemySpawner(Enemy)
-player = Player(player_group)
+player = Player(player_group, Bullet)
 
 
 while True:

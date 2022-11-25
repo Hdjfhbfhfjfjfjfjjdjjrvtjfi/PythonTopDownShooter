@@ -8,7 +8,7 @@ class EnemySpawner:
 
     def update(self, group):
         self.time += 1
-        if self.time == 60:
+        if self.time == 600:
             self.enemy_class(group, (1000, 1000))
             self.enemy_class(group, (500, 1000))
             self.enemy_class(group, (600, 700))

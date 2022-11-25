@@ -6,12 +6,13 @@ class Player(pygame.sprite.Sprite):
     WALK_SPEED = 3
     RUN_SPEED = 6
 
-    def __init__(self, group):
+    def __init__(self, group, cls):
         pygame.sprite.Sprite.__init__(self)
         self.position = Vector2(200, 200)
         self.image = pygame.Surface((20, 20))
         self.image.fill((100, 100, 100))
         self.rect = self.image.get_rect()
+        self.bullet_class = cls
         self.add(group)
 
     def update(self):
