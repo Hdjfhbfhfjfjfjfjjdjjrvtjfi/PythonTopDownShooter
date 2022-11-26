@@ -33,11 +33,10 @@ player = Player(player_group, Bullet)
 
 while True:
     for event in pygame.event.get():
-        if (event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE) or\
-                (not player_group.has(player)):
+        if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             exit()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            Bullet(player.rect.centerx, player.rect.centery, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], bullet_group)
+    if not player_group.has(player):
+        exit()
     screen.fill((0, 0, 0))
     enemy_spawner.update(enemies_group)
     environment_group.draw(screen)
@@ -45,7 +44,7 @@ while True:
     bullet_group.draw(screen)
     enemies_group.update(player.rect.center, player_group)
     enemies_group.draw(screen)
-    player_group.update()
+    player_group.update(bullet_group, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
     player_group.draw(screen)
     pygame.display.flip()
     clock.tick_busy_loop(60)
