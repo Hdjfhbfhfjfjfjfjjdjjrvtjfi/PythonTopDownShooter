@@ -6,6 +6,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, group, start_coord):
         pygame.sprite.Sprite.__init__(self)
+        self.health = 30
         self.image = pygame.Surface((20, 20))
         self.direction = pygame.math.Vector2((0, 0))
         self.position = pygame.math.Vector2(start_coord)
@@ -27,3 +28,8 @@ class Enemy(pygame.sprite.Sprite):
         collides = pygame.sprite.spritecollideany(sprite=self, group=group, collided=pygame.sprite.collide_rect)
         if collides is not None:
             collides.kill()
+
+    def take_damage(self, damage):
+        self.health -= damage
+        if self.health <= 0:
+            self.kill()

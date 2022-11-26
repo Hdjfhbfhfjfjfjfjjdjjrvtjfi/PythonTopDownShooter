@@ -10,7 +10,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, group, cls):
         pygame.sprite.Sprite.__init__(self)
         self.weapon = 0
-        self.weapon_damage = (5, 10, 5)
+        self.weapon_damage = (10, 15, 5)
         self.shoot_cooldown = 0
         self.position = Vector2(200, 200)
         self.image = pygame.Surface((20, 20))
@@ -72,7 +72,7 @@ class Player(pygame.sprite.Sprite):
 
     def shotgun(self, group, mouse_x, mouse_y, weapon):
         direction = pygame.math.Vector2(mouse_x - self.rect.centerx, mouse_y - self.rect.centery).normalize()
-        for _ in range(6):
+        for _ in range(10):
             self.bullet_class(self.rect.centerx, self.rect.centery,
                               direction.rotate(random.randint(-12, 12))[0] + self.rect.centerx,
                               direction.rotate(random.randint(-12, 12))[1] + self.rect.centery, group,
