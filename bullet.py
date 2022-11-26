@@ -4,8 +4,9 @@ import pygame
 class Bullet(pygame.sprite.Sprite):
     SPEED = 20
 
-    def __init__(self, x, y, mouse_x, mouse_y, group):
+    def __init__(self, x, y, mouse_x, mouse_y, group, damage):
         pygame.sprite.Sprite.__init__(self)
+        self.damage = damage
         self.position = pygame.math.Vector2(x, y)
         self.speed = pygame.math.Vector2(mouse_x - x, mouse_y - y).normalize()
         self.speed.scale_to_length(self.SPEED)
