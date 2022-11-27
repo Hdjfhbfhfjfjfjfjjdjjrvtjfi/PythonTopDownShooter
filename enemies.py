@@ -6,6 +6,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, group, start_coord):
         pygame.sprite.Sprite.__init__(self)
+        self.magazine = [10, 30, 5]
         self.health = 30
         self.image = pygame.Surface((20, 20))
         self.direction = pygame.math.Vector2((0, 0))
