@@ -2,14 +2,14 @@ import pygame
 
 
 class Bullet(pygame.sprite.Sprite):
-    SPEED = 20
+    SPEED = 100
 
     def __init__(self, x, y, mouse_x, mouse_y, group, damage):
         pygame.sprite.Sprite.__init__(self)
         self.damage = damage
         self.position = pygame.math.Vector2(x, y)
-        self.speed = pygame.math.Vector2(mouse_x - x, mouse_y - y).normalize()
-        self.speed.scale_to_length(self.SPEED)
+        self.speed = pygame.math.Vector2(mouse_x - x, mouse_y - y)
+        self.speed.scale_to_length(4)
         self.image = pygame.Surface((10, 10))
         self.image.fill((255, 255, 255))
         self.rect = self.image.get_rect()
@@ -32,6 +32,7 @@ class Bullet(pygame.sprite.Sprite):
                     pygame.sprite.spritecollideany(sprite=self, group=group[1], collided=pygame.sprite.collide_rect))
         if collides[0] is not None:
             self.kill()
+            raise StopIteration
         if collides[1] is not None:
             collides[1].take_damage(self.damage)
             self.kill()
