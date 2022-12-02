@@ -21,12 +21,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, group, mouse_x, mouse_y):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_1]:
-            self.weapon = 0
-        elif keys[pygame.K_2]:
-            self.weapon = 1
-        elif keys[pygame.K_3]:
-            self.weapon = 2
+        self.switch_weapon(keys)
         if keys[pygame.K_LSHIFT]:
             self.movement(keys, self.RUN_SPEED)
         elif not keys[pygame.K_LSHIFT]:
@@ -35,6 +30,14 @@ class Player(pygame.sprite.Sprite):
         if pygame.mouse.get_pressed()[0] and self.shoot_cooldown == 0:
             self.strike(group, mouse_x, mouse_y)
         self.shoot_cooldown = 0 if self.shoot_cooldown == 0 else self.shoot_cooldown - 1
+
+    def switch_weapon(self, keys):
+        if keys[pygame.K_1]:
+            self.weapon = 0
+        elif keys[pygame.K_2]:
+            self.weapon = 1
+        elif keys[pygame.K_3]:
+            self.weapon = 2
 
     def movement(self, keys, move_mode):
         if keys[pygame.K_w]:
