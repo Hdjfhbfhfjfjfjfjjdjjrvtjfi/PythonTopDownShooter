@@ -40,8 +40,8 @@ class Bullet(pygame.sprite.Sprite):
 
 
 class EnemyBullet(Bullet):
-    SPEED = 20
+    SPEED = 5
 
     def __init__(self, x, y, player_x, player_y, group, damage):
         Bullet.__init__(self, x, y, player_x, player_y, group, damage)
-        self.speed.normalize()
+        self.speed.scale_to_length(1)
