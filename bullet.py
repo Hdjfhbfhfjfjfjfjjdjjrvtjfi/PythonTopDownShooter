@@ -37,3 +37,11 @@ class Bullet(pygame.sprite.Sprite):
             collides[1].take_damage(self.damage)
             self.kill()
             raise StopIteration
+
+
+class EnemyBullet(Bullet):
+    SPEED = 20
+
+    def __init__(self, x, y, player_x, player_y, group, damage):
+        Bullet.__init__(self, x, y, player_x, player_y, group, damage)
+        self.speed.normalize()

@@ -10,6 +10,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, group, cls):
         pygame.sprite.Sprite.__init__(self)
         self.weapon = 0
+        self.health = 100
         self.weapon_damage = (10, 15, 5)
         self.shoot_cooldown = 0
         self.position = Vector2(200, 200)
@@ -81,4 +82,10 @@ class Player(pygame.sprite.Sprite):
                               direction.rotate(random.randint(-12, 12))[1] + self.rect.centery, group,
                               self.weapon_damage[weapon])
         self.shoot_cooldown = 60
+
+    def take_damage(self, damage):
+        self.health -= damage
+        if self.health < 0:
+            self.kill()
+
 
