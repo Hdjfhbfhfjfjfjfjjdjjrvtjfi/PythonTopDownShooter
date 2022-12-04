@@ -12,8 +12,9 @@ class IEnemy(pygame.sprite.Sprite):
         pass
 
     @abc.abstractmethod
-    def __init__(self, group, start_coord):
-        pygame.sprite.Sprite.__init__(self)
+    def __init__(self, group, start_coord, consumable_cls):
+        super().__init__(self)
+        self.consumables = consumable_cls
         self.health = 30
         self.image = pygame.Surface((20, 20))
         self.direction = pygame.math.Vector2((0, 0))
@@ -55,15 +56,18 @@ class WalkingEnemy(IEnemy, ABC):
 class ShootingEnemy(IEnemy, ABC):
     SPEED = 1
 
-    def __init__(self, group, start_coord, cls):
-        super().__init__(group, start_coord)
-        self.bullet = cls
+    def __init__(self, group, start_coord, consumable_cls, bullet_cls):
+        super().__init__(group, start_coord, consumable_cls)
+        self.bullet = bullet_cls
         self.shoot_cooldown = 120
 
     def update(self, player_coord, group):
+        self.strike(group, player_coord)
+        super().update(player_coord, group[0])
+
+    def strike(self, group, player_coord):
         if self.shoot_cooldown == 0:
             self.bullet(self.rect.centerx, self.rect.centery, player_coord[0], player_coord[1], group[1], 50)
             self.shoot_cooldown = 120
         else:
             self.shoot_cooldown -= 1
-        super().update(player_coord, group[0])

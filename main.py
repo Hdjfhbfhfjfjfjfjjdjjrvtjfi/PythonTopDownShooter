@@ -5,8 +5,9 @@ from enemies import WalkingEnemy, ShootingEnemy
 from enemy_spawner import EnemySpawner
 from environment import Border
 from player import Player
+# from consumables import
 
-#
+
 pygame.init()
 
 HEIGHT = 1050
