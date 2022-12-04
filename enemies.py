@@ -42,7 +42,7 @@ class ShootingEnemy(Enemy):
     def __init__(self, group, start_coord, cls):
         Enemy.__init__(self, group, start_coord)
         self.bullet = cls
-        self.shoot_cooldown = 0
+        self.shoot_cooldown = 120
 
     def update(self, player_coord, player_group, bullet_group):
         if self.shoot_cooldown == 0:

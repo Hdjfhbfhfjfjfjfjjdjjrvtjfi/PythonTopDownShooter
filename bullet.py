@@ -29,18 +29,22 @@ class Bullet(pygame.sprite.Sprite):
 
     def collide(self, group):
         collides = (pygame.sprite.spritecollideany(sprite=self, group=group[0], collided=pygame.sprite.collide_rect),
-                    pygame.sprite.spritecollideany(sprite=self, group=group[1], collided=pygame.sprite.collide_rect))
-        if collides[0] is not None:
-            self.kill()
-            raise StopIteration
-        if collides[1] is not None:
-            collides[1].take_damage(self.damage)
-            self.kill()
-            raise StopIteration
+                    pygame.sprite.spritecollideany(sprite=self, group=group[1], collided=pygame.sprite.collide_rect),
+                    pygame.sprite.spritecollideany(sprite=self, group=group[2], collided=pygame.sprite.collide_rect),)
+        for i in range(0, 3):
+            if collides[i] is not None:
+                try:
+                    collides[i].take_damage(self.damage)
+                except(AttributeError):
+                    pass
+                self.kill()
+                raise StopIteration
+
+
 
 
 class EnemyBullet(Bullet):
-    SPEED = 5
+    SPEED = 10
 
     def __init__(self, x, y, player_x, player_y, group, damage):
         Bullet.__init__(self, x, y, player_x, player_y, group, damage)
