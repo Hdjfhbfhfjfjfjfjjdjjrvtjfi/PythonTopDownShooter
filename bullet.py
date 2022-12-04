@@ -1,5 +1,3 @@
-from abc import ABC
-
 import pygame
 import abc
 
@@ -53,13 +51,13 @@ class IBullet(pygame.sprite.Sprite):
                 raise StopIteration
 
 
-class Bullet(IBullet, ABC):
+class Bullet(IBullet, abc.ABC):
     SPEED = 100
 
 
-class EnemyBullet(IBullet, ABC):
+class EnemyBullet(IBullet, abc.ABC):
     SPEED = 10
 
     def __init__(self, x, y, player_x, player_y, group, damage):
         super().__init__(x, y, player_x, player_y, group, damage)
-        self.speed.scale_to_length(1)
+        self.speed.scale_to_length(2)

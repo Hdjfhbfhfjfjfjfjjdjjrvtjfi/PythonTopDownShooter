@@ -7,7 +7,7 @@ class EnemySpawner:
 
     def update(self, walking_enemy, shooting_enemy):
         self.time += 1
-        if self.time == 600:
+        if self.time == 60:
             self.shooting_enemy_class(shooting_enemy, (1000, 1000), self.bullet_cls)
             self.walking_enemy_class(walking_enemy, (500, 1000))
             self.walking_enemy_class(walking_enemy, (600, 700))

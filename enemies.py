@@ -54,7 +54,7 @@ class WalkingEnemy(IEnemy, abc.ABC):
 class ShootingEnemy(IEnemy, abc.ABC):
     SPEED = 1
 
-    def __init__(self, group, start_coord, consumable_cls, bullet_cls):
+    def __init__(self, group, start_coord, bullet_cls, consumable_cls):
         super().__init__(group, start_coord, consumable_cls)
         self.bullet = bullet_cls
         self.shoot_cooldown = 120
