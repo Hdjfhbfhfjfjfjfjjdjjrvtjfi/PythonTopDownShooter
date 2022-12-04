@@ -1,11 +1,19 @@
+from abc import ABC
+
 import pygame
+import abc
 
 
-class Bullet(pygame.sprite.Sprite):
-    SPEED = 100
+class IBullet(pygame.sprite.Sprite):
+    __metaclass__ = abc.ABCMeta
 
+    @property
+    def SPEED(self):
+        pass
+
+    @abc.abstractmethod
     def __init__(self, x, y, mouse_x, mouse_y, group, damage):
-        pygame.sprite.Sprite.__init__(self)
+        super().__init__()
         self.damage = damage
         self.position = pygame.math.Vector2(x, y)
         self.speed = pygame.math.Vector2(mouse_x - x, mouse_y - y)
@@ -15,9 +23,11 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.add(group)
 
+    @abc.abstractmethod
     def update(self, group):
         self.movement(group)
 
+    @abc.abstractmethod
     def movement(self, group):
         for _ in range(self.SPEED):
             self.position += self.speed
@@ -27,25 +37,29 @@ class Bullet(pygame.sprite.Sprite):
             except StopIteration:
                 break
 
+    @abc.abstractmethod
     def collide(self, group):
-        collides = (pygame.sprite.spritecollideany(sprite=self, group=group[0], collided=pygame.sprite.collide_rect),
-                    pygame.sprite.spritecollideany(sprite=self, group=group[1], collided=pygame.sprite.collide_rect),
-                    pygame.sprite.spritecollideany(sprite=self, group=group[2], collided=pygame.sprite.collide_rect),)
-        for i in range(0, 3):
+        collides = []
+        for i in range(len(group)):
+            collides.append(pygame.sprite.spritecollideany(sprite=self, group=group[i],
+                                                           collided=pygame.sprite.collide_rect))
+        for i in range(len(collides)):
             if collides[i] is not None:
                 try:
                     collides[i].take_damage(self.damage)
-                except(AttributeError):
+                except AttributeError:
                     pass
                 self.kill()
                 raise StopIteration
 
 
+class Bullet(IBullet, ABC):
+    SPEED = 100
 
 
-class EnemyBullet(Bullet):
+class EnemyBullet(IBullet, ABC):
     SPEED = 10
 
     def __init__(self, x, y, player_x, player_y, group, damage):
-        Bullet.__init__(self, x, y, player_x, player_y, group, damage)
+        super().__init__(x, y, player_x, player_y, group, damage)
         self.speed.scale_to_length(1)

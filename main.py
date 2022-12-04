@@ -1,7 +1,7 @@
 import pygame
 
 from bullet import Bullet, EnemyBullet
-from enemies import Enemy, ShootingEnemy
+from enemies import WalkingEnemy, ShootingEnemy
 from enemy_spawner import EnemySpawner
 from environment import Border
 from player import Player
@@ -23,14 +23,13 @@ bullet_group = pygame.sprite.Group()
 enemy_bullet_group = pygame.sprite.Group()
 walking_enemies_group = pygame.sprite.Group()
 shooting_enemies_group = pygame.sprite.Group()
-none_group = pygame.sprite.Group()
 
 
 Border(20, 1050, -20, 0, environment_group)
 Border(20, 1050, 1681, 0, environment_group)
 Border(1680, 20, 0, -20, environment_group)
 Border(1680, 20, 0, 1051, environment_group)
-enemy_spawner = EnemySpawner((Enemy, ShootingEnemy), EnemyBullet)
+enemy_spawner = EnemySpawner((WalkingEnemy, ShootingEnemy), EnemyBullet)
 player = Player(player_group, Bullet)
 
 
@@ -45,11 +44,11 @@ while True:
     environment_group.draw(screen)
     bullet_group.update((environment_group, walking_enemies_group, shooting_enemies_group))
     bullet_group.draw(screen)
-    enemy_bullet_group.update((environment_group, player_group, none_group))
+    enemy_bullet_group.update((environment_group, player_group))
     enemy_bullet_group.draw(screen)
     walking_enemies_group.update(player.rect.center, player_group)
     walking_enemies_group.draw(screen)
-    shooting_enemies_group.update(player.rect.center, player_group, enemy_bullet_group)
+    shooting_enemies_group.update(player.rect.center, (player_group, enemy_bullet_group))
     shooting_enemies_group.draw(screen)
     player_group.update(bullet_group, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
     player_group.draw(screen)
