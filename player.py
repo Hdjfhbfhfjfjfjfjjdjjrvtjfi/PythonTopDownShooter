@@ -8,11 +8,12 @@ class Player(pygame.sprite.Sprite):
     RUN_SPEED = 6
 
     def __init__(self, group, cls):
-        pygame.sprite.Sprite.__init__(self)
+        super().__init__()
         self.weapon = 0
         self.health = 100
-        self.weapon_damage = (10, 15, 5)
-        self.shoot_cooldown = 0
+        self.weapon_magazine = [10, 30, 5]
+        self.weapon_damage = (10, 15, 10)
+        self.shoot_cooldown = [0, 0, 0]
         self.position = Vector2(200, 200)
         self.image = pygame.Surface((20, 20))
         self.image.fill((100, 100, 100))
@@ -28,9 +29,9 @@ class Player(pygame.sprite.Sprite):
         elif not keys[pygame.K_LSHIFT]:
             self.movement(keys, self.WALK_SPEED)
         self.rect.center = self.position
-        if pygame.mouse.get_pressed()[0] and self.shoot_cooldown == 0:
+        if pygame.mouse.get_pressed()[0] and self.shoot_cooldown[self.weapon] == 0:
             self.strike(group, mouse_x, mouse_y)
-        self.shoot_cooldown = 0 if self.shoot_cooldown == 0 else self.shoot_cooldown - 1
+        self.shoot_cooldown[self.weapon] = 0 if self.shoot_cooldown[self.weapon] == 0 else self.shoot_cooldown[self.weapon] - 1
 
     def switch_weapon(self, keys):
         if keys[pygame.K_1]:
@@ -59,29 +60,47 @@ class Player(pygame.sprite.Sprite):
             self.position[1] = 10
 
     def strike(self, group, mouse_x, mouse_y):
-        if self.weapon == 0:
-            self.pistol(group, mouse_x, mouse_y, self.weapon)
-        elif self.weapon == 1:
-            self.automatic_rifle(group, mouse_x, mouse_y, self.weapon)
-        elif self.weapon == 2:
-            self.shotgun(group, mouse_x, mouse_y, self.weapon)
+        match self.weapon:
+            case 0:
+                self.pistol(group, mouse_x, mouse_y, self.weapon)
+            case 1:
+                self.automatic_rifle(group, mouse_x, mouse_y, self.weapon)
+            case 2:
+                self.shotgun(group, mouse_x, mouse_y, self.weapon)
 
     def pistol(self, group, mouse_x, mouse_y, weapon):
-        self.bullet_class(self.rect.centerx, self.rect.centery, mouse_x, mouse_y, group, self.weapon_damage[weapon])
-        self.shoot_cooldown = 30
+        if self.weapon_magazine[self.weapon]:
+            self.bullet_class(self.rect.centerx, self.rect.centery, mouse_x, mouse_y, group, self.weapon_damage[weapon])
+            self.shoot_cooldown[self.weapon] = 30
+            self.weapon_magazine[self.weapon] -= 1
+        else:
+            self.weapon_magazine[self.weapon] = 10
+            self.shoot_cooldown[self.weapon] = 180
 
     def automatic_rifle(self, group, mouse_x, mouse_y, weapon):
-        self.bullet_class(self.rect.centerx, self.rect.centery, mouse_x, mouse_y, group, self.weapon_damage[weapon])
-        self.shoot_cooldown = 10
+        if self.weapon_magazine[self.weapon]:
+            self.bullet_class(self.rect.centerx, self.rect.centery, mouse_x, mouse_y, group, self.weapon_damage[weapon])
+            self.shoot_cooldown[self.weapon] = 10
+            self.weapon_magazine[self.weapon] -= 1
+        else:
+            self.weapon_magazine[self.weapon] = 30
+            self.shoot_cooldown[self.weapon] = 180
 
     def shotgun(self, group, mouse_x, mouse_y, weapon):
-        direction = pygame.math.Vector2(mouse_x - self.rect.centerx, mouse_y - self.rect.centery).normalize()
-        for _ in range(10):
-            self.bullet_class(self.rect.centerx, self.rect.centery,
-                              direction.rotate(random.randint(-12, 12))[0] + self.rect.centerx,
-                              direction.rotate(random.randint(-12, 12))[1] + self.rect.centery, group,
-                              self.weapon_damage[weapon])
-        self.shoot_cooldown = 60
+        if self.weapon_magazine[self.weapon] != 0:
+            direction = pygame.math.Vector2(mouse_x - self.rect.centerx, mouse_y - self.rect.centery).normalize()
+            for _ in range(10):
+                self.bullet_class(self.rect.centerx, self.rect.centery,
+                                  direction.rotate(random.randint(-12, 12))[0] + self.rect.centerx,
+                                  direction.rotate(random.randint(-12, 12))[1] + self.rect.centery, group,
+                                  self.weapon_damage[weapon])
+            self.shoot_cooldown[self.weapon] = 60
+            self.weapon_magazine[self.weapon] -= 1
+        else:
+            print(1)
+            self.weapon_magazine[self.weapon] = 5
+            self.shoot_cooldown[self.weapon] = 300
+
 
     def take_damage(self, damage):
         self.health -= damage
