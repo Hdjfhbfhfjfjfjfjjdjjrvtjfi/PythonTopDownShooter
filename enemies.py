@@ -1,5 +1,3 @@
-from abc import ABC
-
 import pygame
 import abc
 
@@ -49,11 +47,11 @@ class IEnemy(pygame.sprite.Sprite):
             self.kill()
 
 
-class WalkingEnemy(IEnemy, ABC):
+class WalkingEnemy(IEnemy, abc.ABC):
     SPEED = 3
 
 
-class ShootingEnemy(IEnemy, ABC):
+class ShootingEnemy(IEnemy, abc.ABC):
     SPEED = 1
 
     def __init__(self, group, start_coord, consumable_cls, bullet_cls):
