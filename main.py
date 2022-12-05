@@ -5,7 +5,7 @@ from enemies import WalkingEnemy, ShootingEnemy
 from enemy_spawner import EnemySpawner
 from environment import Border
 from player import Player
-# from consumables import
+from consumables import IConsumable
 
 
 pygame.init()
@@ -30,7 +30,7 @@ Border(20, 1050, -20, 0, environment_group)
 Border(20, 1050, 1681, 0, environment_group)
 Border(1680, 20, 0, -20, environment_group)
 Border(1680, 20, 0, 1051, environment_group)
-enemy_spawner = EnemySpawner((WalkingEnemy, ShootingEnemy), EnemyBullet)
+enemy_spawner = EnemySpawner((WalkingEnemy, ShootingEnemy), EnemyBullet, (IConsumable, ))
 player = Player(player_group, Bullet)
 
 while True:
