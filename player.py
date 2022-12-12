@@ -19,6 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.image.fill((100, 100, 100))
         self.rect = self.image.get_rect()
         self.bullet_class = cls
+        self.direction = pygame.math.Vector2(0, 0)
         self.add(group)
 
     def update(self, group, mouse_x, mouse_y):
@@ -42,14 +43,16 @@ class Player(pygame.sprite.Sprite):
             self.weapon = 2
 
     def movement(self, keys, move_mode):
+        self.direction = Vector2(0, 0)
         if keys[pygame.K_w]:
-            self.position = self.position + Vector2(0, -move_mode)
+            self.direction = self.direction + Vector2(0, -move_mode)
         if keys[pygame.K_s]:
-            self.position = self.position + Vector2(0, move_mode)
+            self.direction = self.direction + Vector2(0, move_mode)
         if keys[pygame.K_a]:
-            self.position = self.position + Vector2(-move_mode, 0)
+            self.direction = self.direction + Vector2(-move_mode, 0)
         if keys[pygame.K_d]:
-            self.position = self.position + Vector2(move_mode, 0)
+            self.direction = self.direction + Vector2(move_mode, 0)
+        self.position += self.direction
         if self.position[0] > 1670:
             self.position[0] = 1670
         elif self.position[0] < 10:
@@ -100,7 +103,6 @@ class Player(pygame.sprite.Sprite):
             print(1)
             self.weapon_magazine[self.weapon] = 5
             self.shoot_cooldown[self.weapon] = 300
-
 
     def take_damage(self, damage):
         self.health -= damage

@@ -1,5 +1,4 @@
 import random
-
 import pygame
 import abc
 
@@ -38,21 +37,19 @@ class IEnemy(pygame.sprite.Sprite):
 
     @abc.abstractmethod
     def collide(self, group):
-        collides = pygame.sprite.spritecollideany(sprite=self, group=group[0], collided=pygame.sprite.collide_rect)
+        collides = pygame.sprite.spritecollideany(sprite=self, group=group, collided=pygame.sprite.collide_rect)
         if collides is not None:
             collides.kill()
 
     @abc.abstractmethod
-    def take_damage(self, damage, group):
+    def take_damage(self, damage):
         self.health -= damage
         if self.health <= 0:
             self.kill()
-            # self.spawn_consumable(group)
 
     @abc.abstractmethod
     def spawn_consumable(self, group):
         self.consumables[random.randint(0, len(self.consumables))](self.rect.centerx, self.rect.centery, group)
-
 
 
 class WalkingEnemy(IEnemy, abc.ABC):
