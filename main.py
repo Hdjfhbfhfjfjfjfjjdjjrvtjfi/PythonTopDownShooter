@@ -1,13 +1,10 @@
 import pygame
-
-from bullet import Bullet, EnemyBullet
-from enemies import WalkingEnemy, ShootingEnemy
-from enemy_spawner import EnemySpawner
-from environment import Border
-from player import Player
-from consumables import IConsumable
+from clases.border import Border
+from clases.player.player_builder import PlayerBuilder
+from clases.player.player import Player
 
 
+print(Border)
 pygame.init()
 
 HEIGHT = 1050
@@ -18,39 +15,43 @@ pygame.display.set_caption("123")
 clock = pygame.time.Clock()
 
 
-player_group = pygame.sprite.Group()
 environment_group = pygame.sprite.Group()
-bullet_group = pygame.sprite.Group()
-enemy_bullet_group = pygame.sprite.Group()
-walking_enemies_group = pygame.sprite.Group()
-shooting_enemies_group = pygame.sprite.Group()
-consumable_group = pygame.sprite.Group()
+player_group = pygame.sprite.Group()
+player_builder = PlayerBuilder(Player(player_group))
+player = player_builder.add_shooting().add_movement(40, 40).create_player()
+
 
 Border(20, 1050, -20, 0, environment_group)
 Border(20, 1050, 1681, 0, environment_group)
 Border(1680, 20, 0, -20, environment_group)
 Border(1680, 20, 0, 1051, environment_group)
-enemy_spawner = EnemySpawner((WalkingEnemy, ShootingEnemy), EnemyBullet, (IConsumable, ))
-player = Player(player_group, Bullet)
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             exit()
-    if not player_group.has(player):
-        exit()
+        if player not in player_group:
+            exit()
     screen.fill((0, 0, 0))
-    enemy_spawner.update(walking_enemies_group, shooting_enemies_group)
-    environment_group.draw(screen)
-    bullet_group.update((environment_group, walking_enemies_group, shooting_enemies_group))
-    bullet_group.draw(screen)
-    enemy_bullet_group.update((environment_group, player_group))
-    enemy_bullet_group.draw(screen)
-    walking_enemies_group.update(player.rect.center, player_group)
-    walking_enemies_group.draw(screen)
-    shooting_enemies_group.update(player.rect.center, (player_group, enemy_bullet_group))
-    shooting_enemies_group.draw(screen)
-    player_group.update(bullet_group, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
+    player_group.update()
     player_group.draw(screen)
     pygame.display.flip()
-    clock.tick_busy_loop(60)
+    clock.tick(60)
+
+    # if not player_group.has(player):
+    #     exit()
+    # screen.fill((0, 0, 0))
+    # enemy_spawner.update(walking_enemies_group, shooting_enemies_group)
+    # environment_group.draw(screen)
+    # bullet_group.update((environment_group, walking_enemies_group, shooting_enemies_group))
+    # bullet_group.draw(screen)
+    # enemy_bullet_group.update((environment_group, player_group))
+    # enemy_bullet_group.draw(screen)
+    # walking_enemies_group.update(player.rect.center, player_group)
+    # walking_enemies_group.draw(screen)
+    # shooting_enemies_group.update(player.rect.center, (player_group, enemy_bullet_group))
+    # shooting_enemies_group.draw(screen)
+    # player_group.update(bullet_group, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
+    # player_group.draw(screen)
+    # pygame.display.flip()
+    # clock.tick_busy_loop(60)
