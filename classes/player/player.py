@@ -29,5 +29,4 @@ class Player(IPlayer):
 
     def kill_player(self):
         self.kill()
-        self.kill()
 
