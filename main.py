@@ -1,7 +1,7 @@
 import pygame
-from clases.border import Border
-from clases.player.player_builder import PlayerBuilder
-from clases.player.player import Player
+from classes.border import Border
+from classes.player.player_builder import PlayerBuilder
+from classes.player.player import Player
 
 
 print(Border)

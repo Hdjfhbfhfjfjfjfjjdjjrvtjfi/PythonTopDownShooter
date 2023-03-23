@@ -3,7 +3,7 @@ from pygame import K_w, K_s, K_a, K_d
 from pygame.sprite import AbstractGroup
 from pygame.math import Vector2 as Vector
 from .player import Player
-from clases.player.iplayer_decorator import IPlayerDecorator
+from classes.player.iplayer_decorator import IPlayerDecorator
 from consts import PLAYER_SPEED, PLAYER_HEALTH
 
 
