@@ -1,18 +1,27 @@
 from pygame.sprite import AbstractGroup
-from .player import Player
+from .iplayer import IPlayer
 
 
-class IPlayerDecorator(Player):
-    def __init__(self, decorated: Player, *groups: AbstractGroup):
+class IPlayerDecorator(IPlayer):
+
+    def __init__(self, decorated: IPlayer, *groups: AbstractGroup):
         super(IPlayerDecorator, self).__init__(*groups)
-        self._decorated: Player = decorated
+        self._decorated: IPlayer = decorated
+        self.rect = self._decorated.rect
+        self.mask = self._decorated.mask
+        self.image = self._decorated.image
+        self.health = self._decorated.health
 
     def update(self) -> None:
         self._decorated.update()
         self.keys = self._decorated.keys
         self.mouse_keys = self._decorated.mouse_keys
 
-    def kill_player(self):
-        self._decorated.kill_player()
-        self.kill()
+    def take_damage(self, damage: int) -> None:
+        self.health -= damage
+        if self.health <= 0:
+            self.kill_player()
 
+    def kill_player(self):
+        self._decorated.kill()
+        self.kill()
