@@ -4,7 +4,6 @@ from classes.player.player_builder import PlayerBuilder
 from classes.player.player import Player
 
 
-print(Border)
 pygame.init()
 
 HEIGHT = 1050
