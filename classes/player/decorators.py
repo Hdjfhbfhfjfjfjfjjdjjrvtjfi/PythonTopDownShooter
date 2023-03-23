@@ -3,8 +3,9 @@ from pygame import K_w, K_s, K_a, K_d
 from pygame.sprite import AbstractGroup
 from pygame.math import Vector2 as Vector
 from .player import Player
-from classes.player.iplayer_decorator import IPlayerDecorator
-from consts import PLAYER_SPEED, PLAYER_HEALTH
+from .iplayer_decorator import IPlayerDecorator
+from consts import PLAYER_SPEED
+from ..weapons.bullets.player_bullet import PlayerBullet
 
 
 class PlayerMoveDecorator(IPlayerDecorator):
@@ -25,7 +26,7 @@ class PlayerMoveDecorator(IPlayerDecorator):
             self.position = Vector(self.position.x + self.speed, self.position.y)
         self.rect.center = self.position
 
-    def update(self) -> None:
+    def update(self, *groups: AbstractGroup) -> None:
         IPlayerDecorator.update(self)
         self.movement(self.keys)
 
@@ -33,11 +34,12 @@ class PlayerMoveDecorator(IPlayerDecorator):
 class PlayerShootingDecorator(IPlayerDecorator):
     def __init__(self, decorated: Player, *groups: AbstractGroup):
         super().__init__(decorated, *groups)
+        self.bullet_cls: PlayerBullet = PlayerBullet
 
-    def shoot(self, keys: tuple[bool, bool, bool]) -> None:
+    def shoot(self, keys: tuple[bool, bool, bool], groups) -> None:
         if keys[0]:
-            print(2)
+            self.bullet_cls((self.rect.x, self.rect.y), self.mouse_coordinates, 1, 10, 50, groups)
 
-    def update(self) -> None:
+    def update(self, *groups: AbstractGroup) -> None:
         IPlayerDecorator.update(self)
-        self.shoot(self.mouse_keys)
+        self.shoot(self.mouse_keys, groups)

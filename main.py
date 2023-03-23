@@ -16,6 +16,8 @@ clock = pygame.time.Clock()
 
 environment_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
+enemy_group = pygame.sprite.Group()
+bullet_group = pygame.sprite.Group()
 player_builder = PlayerBuilder(Player(player_group))
 player = player_builder.add_shooting().add_movement(40, 40).create_player()
 
@@ -32,8 +34,10 @@ while True:
         if player not in player_group:
             exit()
     screen.fill((0, 0, 0))
-    player_group.update()
+    player_group.update(bullet_group)
     player_group.draw(screen)
+    bullet_group.update(enemy_group)
+    bullet_group.draw(screen)
     pygame.display.flip()
     clock.tick(60)
 

@@ -1,6 +1,6 @@
 import pygame.key as key
 import pygame.mouse as mouse
-from pygame import Surface, Mask, Rect
+from pygame import Surface
 from pygame.sprite import AbstractGroup
 from consts import PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_HEALTH
 from .iplayer import IPlayer
@@ -14,9 +14,10 @@ class Player(IPlayer):
         self.mask = self.image.get_masks()
         self.health = PLAYER_HEALTH
 
-    def update(self) -> None:
+    def update(self, *group: AbstractGroup) -> None:
         self.keys = key.get_pressed()
         self.mouse_keys = mouse.get_pressed()
+        self.mouse_coordinates = mouse.get_pos()
 
     def take_damage(self, damage: int) -> None:
         self.health -= damage
