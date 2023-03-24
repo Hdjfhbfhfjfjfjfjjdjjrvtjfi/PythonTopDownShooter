@@ -14,16 +14,17 @@ class Player(IPlayer):
         self.mask = self.image.get_masks()
         self.health = PLAYER_HEALTH
 
-    def update(self, *group: AbstractGroup) -> None:
+    def update(self, groups: list[AbstractGroup]) -> None:
         self.keys = key.get_pressed()
         self.mouse_keys = mouse.get_pressed()
         self.mouse_coordinates = mouse.get_pos()
 
-    def take_damage(self, damage: int) -> None:
-        self.health -= damage
-        if self.health <= 0:
-            self.kill_player()
+    def kill(self) -> None:
+        self.remove(self.groups())
 
-    def kill_player(self) -> None:
-        self.kill()
+    def take_damage(self, damage):
+        self.health -= damage
+        print(self.health)
+        if self.health <= 0:
+            self.kill()
 

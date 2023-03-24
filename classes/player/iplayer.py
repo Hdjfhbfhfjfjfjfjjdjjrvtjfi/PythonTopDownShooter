@@ -12,11 +12,5 @@ class IPlayer(Sprite):
     mouse_coordinates: tuple[int, int]
     health: int
 
-    def update(self, *groups: AbstractGroup) -> None:
-        raise NotImplementedError
-
-    def take_damage(self, damage: int) -> None:
-        raise NotImplementedError
-
-    def kill_player(self) -> None:
+    def update(self, groups: list[AbstractGroup]) -> None:
         raise NotImplementedError

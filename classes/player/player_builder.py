@@ -1,6 +1,8 @@
 from .player import Player
 from .iplayer_decorator import IPlayerDecorator
-from .decorators import PlayerMoveDecorator, PlayerShootingDecorator
+from classes.weapons.pistol import Pistol
+from classes.player.decorators.player_shooting_decorator import PlayerShootingDecorator
+from classes.player.decorators.player_move_decorator import PlayerMoveDecorator
 
 
 class PlayerBuilder:
@@ -12,7 +14,7 @@ class PlayerBuilder:
         return self
 
     def add_shooting(self):
-        self.player = PlayerShootingDecorator(self.player, self.player.groups())
+        self.player = PlayerShootingDecorator(self.player, [Pistol], self.player.groups())
         return self
 
     def create_player(self) -> IPlayerDecorator:

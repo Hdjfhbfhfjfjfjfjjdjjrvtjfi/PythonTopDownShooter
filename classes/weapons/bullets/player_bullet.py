@@ -1,5 +1,7 @@
 from .ibullet import IBullet
-from pygame.sprite import AbstractGroup, spritecollideany, collide_rect, Sprite
+from ...player.player import Player
+from ...border import Border
+from pygame.sprite import AbstractGroup, spritecollideany, collide_rect, Sprite, spritecollide, groupcollide, collide_mask
 from pygame.math import Vector2 as Vector
 from pygame import Surface
 
@@ -19,25 +21,26 @@ class PlayerBullet(IBullet):
         self.bullet_speed = bullet_speed
         self.image.fill((255, 255, 255))
 
-    def update(self, group: AbstractGroup) -> None:
-        self.move(group)
+    def update(self, *groups: AbstractGroup) -> None:
+        self.move(*groups)
 
-    def move(self, group: AbstractGroup) -> None:
+    def move(self, *groups: AbstractGroup) -> None:
         for _ in range(self.bullet_speed):
             self.position = self.position + self.check_collision_speed
             self.rect.center = self.position
             try:
-                self.check_collides(group)
+                self.check_collides(*groups)
             except StopIteration:
                 pass
     """Изменить класс объекта"""
-    def check_collides(self, group: AbstractGroup) -> None:
-        collides: list[Sprite] = []
-        for collided in group:
-            if spritecollideany(self, collided, collide_rect) is not None:
-                collides.append(collided)
-        for sprite in collides:
-            if isinstance(sprite, int):
-                sprite.take_damage(self.damage)
-            self.kill()
-            raise StopIteration
+    def check_collides(self, *groups: AbstractGroup) -> None:
+        for group in list(iter(groups)):
+            collided = spritecollideany(self, group, collide_rect)
+            if spritecollideany(self, group, collide_rect) is not None:
+                # if isinstance(collided, Player):
+                #     collided.take_damage(self.damage)
+                #     self.kill()
+                #     raise StopIteration
+                if isinstance(collided, Border):
+                    self.kill()
+                    raise StopIteration

@@ -12,17 +12,10 @@ class IPlayerDecorator(IPlayer):
         self.image = self._decorated.image
         self.health = self._decorated.health
 
-    def update(self, *groups: AbstractGroup) -> None:
-        self._decorated.update()
+    def update(self, groups: list[AbstractGroup]) -> None:
+        if not self._decorated.groups():
+            self.kill()
         self.keys = self._decorated.keys
         self.mouse_keys = self._decorated.mouse_keys
         self.mouse_coordinates = self._decorated.mouse_coordinates
 
-    def take_damage(self, damage: int) -> None:
-        self.health -= damage
-        if self.health <= 0:
-            self.kill_player()
-
-    def kill_player(self):
-        self._decorated.kill()
-        self.kill()

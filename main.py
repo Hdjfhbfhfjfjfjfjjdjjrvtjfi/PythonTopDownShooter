@@ -27,16 +27,17 @@ Border(20, 1050, 1681, 0, environment_group)
 Border(1680, 20, 0, -20, environment_group)
 Border(1680, 20, 0, 1051, environment_group)
 
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             exit()
-        if player not in player_group:
+        if not player_group:
             exit()
     screen.fill((0, 0, 0))
     player_group.update(bullet_group)
     player_group.draw(screen)
-    bullet_group.update(enemy_group)
+    bullet_group.update(player_group, enemy_group, environment_group)
     bullet_group.draw(screen)
     pygame.display.flip()
     clock.tick(60)
